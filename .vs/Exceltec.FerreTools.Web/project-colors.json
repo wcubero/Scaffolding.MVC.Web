@@ -1,0 +1,21 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "7a709b16-4269-47a1-b669-01aaf4e8c20c": {
+      "ProjectGuid": "7a709b16-4269-47a1-b669-01aaf4e8c20c",
+      "DisplayName": "Exceltec.FerreTools.Web",
+      "ColorIndex": 0
+    },
+    "ef1829e3-6d60-4e64-977d-a6bdee4ea318": {
+      "ProjectGuid": "ef1829e3-6d60-4e64-977d-a6bdee4ea318",
+      "DisplayName": "Exceltec.FerreTools.FronEnd",
+      "ColorIndex": 1
+    },
+    "2e7fc2d5-1780-4e43-b586-875065412ef8": {
+      "ProjectGuid": "2e7fc2d5-1780-4e43-b586-875065412ef8",
+      "DisplayName": "WebApplication1",
+      "ColorIndex": 2
+    }
+  },
+  "NextColorIndex": 3
+}

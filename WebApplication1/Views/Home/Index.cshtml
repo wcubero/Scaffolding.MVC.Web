@@ -1,0 +1,168 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+
+        GetListadoInventario();
+
+
+        //$("#IdListado").DataTable({
+        //    responsive: true,
+        //    dom: 'Bfrtip',
+        //    buttons: [
+        //        'copy', 'csv', 'excel', 'pdf', 'print'
+        //    ]
+        //});
+
+
+    });
+
+
+    function DefaultValues() {
+
+        ////fecha desde------------------------------------------------------------------------
+        //var dateDesde = new Date(new Date().setDate(new Date().getDate() - 30));
+        //$('#id_date_fecha_desde').val(dateDesde.toISOString().substring(0, 10));
+
+
+        ////fecha hasta------------------------------------------------------------------------
+        //var date = new Date();
+        //var currentDate = date.toISOString().substring(0, 10);
+        //$('#id_date_fecha_hasta').val(currentDate);
+
+
+    }
+
+
+    function GetListadoInventario() {
+
+        LoadingShow();
+
+        var sucessResponse = function (data) {
+            debugger
+
+            var idListado = $('#IdListado').DataTable().clear().draw();
+
+            for (var i = 0; i < data.length; i++) {
+
+                let model = data[i];
+
+                let html_row = `
+                        <tr>
+                            <th>${model.id}</th>
+                            <th>${model.nombre}</th>
+                            <th>${model.apellido}</th>
+                            <th>${model.edad}</th>
+                            <th><a href=''>Eitar</a></th>
+                        </tr>
+                    `;
+
+                idListado.row.add($(html_row)).draw();
+
+                //alert(model.id);
+
+            }
+
+            $('#IdListado').DataTable({
+                "order": [[0, "desc"]],
+                destroy: true,
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+                responsive: true
+            }).column([]).visible(false);
+
+            LoadingHide();
+        };
+
+        var errorResponse = function (data) {
+            debugger
+        };
+
+        var model = { Id: '1', Nombre: 'Wallter Hola Mundo' };
+
+        ajaxMethod("/Home/GetListadoTest", model, sucessResponse, errorResponse);
+
+    }
+
+
+    function LoadingShow() {
+        //https://www.jqueryscript.net/loading/Fullscreen-Loading-Modal-Indicator-Plugin-For-jQuery-loadingModal.html
+        $('body').loadingModal({
+            position: 'auto',
+            text: '',
+            color: '#fff',
+            opacity: '0.7',
+            backgroundColor: '#A0D1E6',
+            animation: 'wave'
+        });
+
+    }
+
+    function LoadingHide() {
+        $('body').loadingModal('hide');
+        $('body').loadingModal('destroy');
+    }
+
+
+    function ajaxMethod(path, model, successResponse, errorResponse) {
+
+        jQuery.ajax({
+            type: "POST",
+            cache: false,
+            url: path,
+            data: model,
+            dataType: "json",
+            success: function (data) {
+                successResponse(data);
+            },
+            error: function (data) {
+                errorResponse(data);
+            }
+        });
+
+
+    }
+
+
+
+
+
+</script>
+
+@*GetListadoTest*@
+
+
+<table id="IdListado" class="display" style="width:100%">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Edad</th>
+            <th>Editar</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        
+    </tbody>
+    <tfoot>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </tfoot>
+</table>
+

@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace WebApplication1
 {
@@ -15,7 +14,8 @@ namespace WebApplication1
         private static int _ErrorRetry = 10;
 
         private static string _key = "Ajduosn4021";
-     
+
+        
         public static string FirstCharToUpper(this string input) =>
         input switch
         {
@@ -35,7 +35,7 @@ namespace WebApplication1
             return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
         }
 
-      
+
         private static string ApplicationExeDirectory()
         {
             var location = System.Reflection.Assembly.GetExecutingAssembly().Location;
@@ -78,7 +78,7 @@ namespace WebApplication1
                 catch (Exception ex)
                 {
                     if (Contador == _ErrorRetry)
-                    {                      
+                    {
                         throw ex;
                     }
 
@@ -106,12 +106,12 @@ namespace WebApplication1
         {
             var client = new RestClient("https://petstore.swagger.io/v2/pet/findByStatus?status=available");
             client.Timeout = -1;
-            var request = new RestRequest(Method.GET);            
+            var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
             Console.WriteLine(response.Content);
 
         }
-        
+
 
     }
 

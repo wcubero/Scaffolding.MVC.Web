@@ -9,21 +9,12 @@
 
     $(document).ready(function () {
 
-
         GetListadoInventario();
 
-
-        //$("#IdListado").DataTable({
-        //    responsive: true,
-        //    dom: 'Bfrtip',
-        //    buttons: [
-        //        'copy', 'csv', 'excel', 'pdf', 'print'
-        //    ]
-        //});
-
+        CargarComboBox("4", "/Home/CargarItemsComboBox", "#id_select_test");
 
     });
-
+      
 
     function DefaultValues() {
 
@@ -40,14 +31,24 @@
 
     }
 
+      function AxiosPostRequest(path, model, success) {
+            axios.post(path, model)
+                .then((response) => {
+                    success(response);
+                }, (error) => {
+                    console.log(error);
+                    LoadingHide();
+                    console.log(error);
+                    alert("Ocurrió un error, por favor intente de nuevo.");
+                });
+        }
 
     function GetListadoInventario() {
 
         LoadingShow();
 
         var sucessResponse = function (data) {
-            debugger
-
+            
             var idListado = $('#IdListado').DataTable().clear().draw();
 
             for (var i = 0; i < data.length; i++) {
@@ -56,17 +57,15 @@
 
                 let html_row = `
                         <tr>
-                            <th>${model.id}</th>
-                            <th>${model.nombre}</th>
-                            <th>${model.apellido}</th>
-                            <th>${model.edad}</th>
-                            <th><a href=''>Eitar</a></th>
+                            <td>${model.id}</td>
+                            <td>${model.nombre}</td>
+                            <td>${model.apellido}</td>
+                            <td>${model.edad}</td>
+                            <td><a href=''>Eitar</a></td>
                         </tr>
                     `;
 
                 idListado.row.add($(html_row)).draw();
-
-                //alert(model.id);
 
             }
 
@@ -84,7 +83,7 @@
         };
 
         var errorResponse = function (data) {
-            debugger
+            
         };
 
         var model = { Id: '1', Nombre: 'Wallter Hola Mundo' };
@@ -132,7 +131,44 @@
 
     }
 
+          function getParameterByName(name, url = window.location.href) {
+            name = name.replace(/[\[\]]/g, '\\$&');
+            var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
 
+      function CargarComboBox(valueDefault, path, IdSelector) {
+       
+            LoadingShow();
+
+            var success = function (response) {
+
+                //apellido: "Cubero"
+                //edad: 32
+                //id: 1
+                //nombre: "Walter"
+
+                for (var i = 0; i < response.data.length; i++) {
+                    var model = response.data[i];
+                    $(IdSelector).append(`<option value='${model.id}'>${model.id}</option>`)
+                }
+
+                $(IdSelector).select2();
+
+                $(IdSelector).val(valueDefault).trigger('change');
+
+                LoadingHide();
+            };
+
+             var errorResponse = function (response) {};
+
+            var model = { Token: "", IdReservaCita: parseInt(getParameterByName("Id")) };
+
+            AxiosPostRequest(path, model, success);
+        }
 
 
 
@@ -140,6 +176,14 @@
 
 @*GetListadoTest*@
 
+<div class=row>
+
+    <div class=col-lg-12>
+
+        <div class="page-header">
+        <h1>Ejemplo para cargar un Grid</h1>
+        <h2>Componente utilizado: <span class="label label-info">https://datatables.net</span></h2>
+      </div>
 
 <table id="IdListado" class="display" style="width:100%">
     <thead>
@@ -166,3 +210,39 @@
     </tfoot>
 </table>
 
+
+    </div>
+
+</div>
+
+
+
+<br />
+<br />
+
+
+<div class="row">
+
+    <div class="col-lg-12">
+
+           <div class="page-header">
+        <h1>Ejemplo para cargar un Combobox</h1>
+        <h2>Componente utilizado: <span class="label label-info">https://select2.org/ </span></h2>
+      </div>
+
+          <span class="TitulosForm">Tratamiento:</span><br />
+            <select id="id_select_test" class="form-control form-control-sm" name="tratamiento">
+            </select>
+
+
+    </div>
+
+</div>
+
+
+
+<br />
+<br />
+
+<br />
+<br />

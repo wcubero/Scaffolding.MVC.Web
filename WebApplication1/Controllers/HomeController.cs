@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
@@ -23,24 +20,32 @@ namespace WebApplication1.Controllers
             return View();
         }
 
-
-        public JsonResult GetListadoTest(Persona persona)
+        public List<Persona> ListItems()
         {
             List<Persona> ListPersonas = new List<Persona>();
 
-            ListPersonas.Add(new Persona(){ Id = 1, Nombre = "Walter", Apellido = "Cubero", Edad = 32  });
+            ListPersonas.Add(new Persona() { Id = 1, Nombre = "Walter", Apellido = "Cubero", Edad = 32 });
 
             ListPersonas.Add(new Persona() { Id = 2, Nombre = "Alonso", Apellido = "Gamboa", Edad = 24 });
 
             for (int i = 0; i < 100; i++)
             {
-                ListPersonas.Add(new Persona() { Id = i+2, Nombre = "Alonso", Apellido = "Gamboa", Edad = 24 });
+                ListPersonas.Add(new Persona() { Id = i + 2, Nombre = "Alonso", Apellido = "Gamboa", Edad = 24 });
             }
 
-            return Json(ListPersonas);
+            return ListPersonas;
+        }
+
+        public JsonResult GetListadoTest(Persona persona)
+        {          
+            return Json(ListItems());
         }
 
 
+        public JsonResult CargarItemsComboBox([FromBody] string model)
+        {       
+            return Json(ListItems());
+        }
 
         public IActionResult Privacy()
         {
